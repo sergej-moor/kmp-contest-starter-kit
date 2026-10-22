@@ -26,7 +26,9 @@ import com.kotlinfoundation.koko.presentation.screens.home.HomeViewModel
 import com.kotlinfoundation.koko.presentation.screens.onboarding.OnBoardingViewModel
 import com.kotlinfoundation.koko.presentation.screens.paywall.PaywallViewModel
 import com.kotlinfoundation.koko.presentation.screens.profile.ProfileViewModel
+import com.kotlinfoundation.koko.presentation.screens.shadercamspike.ShaderCamSpikeViewModel
 import com.kotlinfoundation.koko.presentation.screens.subscriptions.SubscriptionsViewModel
+import com.kotlinfoundation.koko.presentation.screens.videoshaderspike.VideoShaderSpikeViewModel
 import com.kotlinfoundation.koko.subscription.api.MockSubscriptionProvider
 import com.kotlinfoundation.koko.subscription.api.NoOpSubscriptionProviderUi
 import com.kotlinfoundation.koko.subscription.api.SubscriptionProvider
@@ -148,6 +150,8 @@ private val presentationModule = module {
     viewModelOf(::SubscriptionsViewModel)
     viewModelOf(::GenerationResultViewModel)
     viewModelOf(::CreditBalanceViewModel)
+    viewModelOf(::ShaderCamSpikeViewModel)
+    viewModelOf(::VideoShaderSpikeViewModel)
 
     // Add new view models below — generate_screen.sh inserts here.
 }

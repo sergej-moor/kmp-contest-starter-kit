@@ -61,4 +61,12 @@ data class GenerationResultScreenRoute(val id: String) : ScreenRoute
 @SerialName("Paywall")
 data class PaywallScreenRoute(val placementId: String? = null) : ScreenRoute
 
+@Serializable
+@SerialName("ShaderCamSpike")
+data object ShaderCamSpikeScreenRoute : ScreenRoute
+
+@Serializable
+@SerialName("VideoShaderSpike")
+data object VideoShaderSpikeScreenRoute : ScreenRoute
+
 // Add new routes below — generate_screen.sh inserts here.

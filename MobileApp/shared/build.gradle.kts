@@ -153,6 +153,13 @@ kotlin {
 
         androidMain.dependencies {
             implementation(libs.androidx.activityCompose)
+            // CameraX direct wiring for the video-shader-spike (CameraEffect/SurfaceProcessor):
+            // Camposer doesn't expose effect hooks, so this screen binds CameraX itself.
+            implementation(libs.camerax.core)
+            implementation(libs.camerax.camera2)
+            implementation(libs.camerax.lifecycle)
+            implementation(libs.camerax.video)
+            implementation(libs.camerax.view)
             implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.firebase.messaging)
             implementation(libs.firebase.analytics)
@@ -177,6 +184,13 @@ kotlin {
         getByName("nonWebMain") {
             dependencies {
                 implementation(libs.sqlite.bundled)
+            }
+        }
+
+        // Camera preview (CameraX on Android, AVFoundation on iOS) for the shader-camera spike.
+        getByName("mobileMain") {
+            dependencies {
+                implementation(libs.camposer)
             }
         }
 

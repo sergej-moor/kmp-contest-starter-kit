@@ -50,9 +50,13 @@ import com.kotlinfoundation.koko.presentation.screens.paywall.PaywallViewModel
 import com.kotlinfoundation.koko.presentation.screens.paywall.remotepaywall.RemotePaywallScreen
 import com.kotlinfoundation.koko.presentation.screens.profile.ProfileScreen
 import com.kotlinfoundation.koko.presentation.screens.profile.ProfileViewModel
+import com.kotlinfoundation.koko.presentation.screens.shadercamspike.ShaderCamSpikeScreen
+import com.kotlinfoundation.koko.presentation.screens.shadercamspike.ShaderCamSpikeViewModel
 import com.kotlinfoundation.koko.presentation.screens.signin.SignInScreen
 import com.kotlinfoundation.koko.presentation.screens.subscriptions.SubscriptionsScreen
 import com.kotlinfoundation.koko.presentation.screens.subscriptions.SubscriptionsViewModel
+import com.kotlinfoundation.koko.presentation.screens.videoshaderspike.VideoShaderSpikeScreen
+import com.kotlinfoundation.koko.presentation.screens.videoshaderspike.VideoShaderSpikeViewModel
 import com.kotlinfoundation.koko.root.AppConfiguration
 import com.kotlinfoundation.koko.util.Constants
 import com.kotlinfoundation.koko.util.extensions.isKeyboardOpen
@@ -94,7 +98,8 @@ private val TOP_LEVEL_ROUTES: Map<TopLevelScreenRoute, BottomNavItem> = linkedMa
 @Composable
 fun AppNavigation() {
     val navigationState = rememberNavigationState(
-        startRoute = OnBoardingScreenRoute,
+        // TODO(shader-spike): revert to OnBoardingScreenRoute once the feasibility spike is done.
+        startRoute = VideoShaderSpikeScreenRoute,
         topLevelRoutes = TOP_LEVEL_ROUTES.keys,
         primaryTopLevelRoute = HomeScreenRoute,
     )
@@ -265,6 +270,16 @@ private fun EntryProviderScope<ScreenRoute>.screens(navigator: Navigator) {
                 onSignInRequired = { navigator.navigate(SignInScreenRoute()) },
             )
         }
+    }
+
+    entry<ShaderCamSpikeScreenRoute> {
+        val viewModel = koinViewModel<ShaderCamSpikeViewModel>()
+        ShaderCamSpikeScreen(viewModel = viewModel)
+    }
+
+    entry<VideoShaderSpikeScreenRoute> {
+        val viewModel = koinViewModel<VideoShaderSpikeViewModel>()
+        VideoShaderSpikeScreen(viewModel = viewModel)
     }
 
     // Add new screen entries below — generate_screen.sh inserts here.
