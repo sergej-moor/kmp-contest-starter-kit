@@ -31,6 +31,8 @@
     </dict>
     <key>NSCameraUsageDescription</key>
     <string>This app needs camera access so you can take a photo to use in your generation.</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>This app saves the photos and videos you capture with the shader effect to your photo library.</string>
     <key>GIDServerClientID</key>
     <string>YOUR_WEB_CLIENT_ID</string>
 
