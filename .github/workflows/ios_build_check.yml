@@ -1,0 +1,56 @@
+name: iOS Build Check
+
+# Lightweight iOS compile/link verification on a GitHub-hosted macOS runner — no
+# signing, no fastlane, no App Store Connect. This exists because the local dev
+# machine is Windows: Kotlin/Native can compile iOS source there, but linking a
+# real .framework needs Apple's toolchain, which only runs on macOS. Public
+# repositories get GitHub-hosted runners (including macOS) for free with no
+# included-minutes cap, so this costs nothing to run on every push/PR.
+
+on:
+  pull_request:
+    branches:
+      - '**'
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: MobileApp
+
+jobs:
+  ios-build-check:
+    runs-on: macos-latest
+    name: Compile + link iOS simulator framework
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup environment
+        uses: ./.github/actions/setup-gradle
+        with:
+          gradle-cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
+
+      # Same approach as pr_checks.yml: keys come from local.properties.example,
+      # so this step never needs editing when a new key is added there.
+      - name: Write secrets to local.properties
+        env:
+          ALL_SECRETS: ${{ toJSON(secrets) }}
+        run: |
+          set -euo pipefail
+          keys=$(sed -n 's/^\([A-Z][A-Z0-9_]*\)=.*/\1/p' local.properties.example)
+          [ -n "$keys" ] || { echo "No keys found in local.properties.example"; exit 1; }
+          for key in $keys; do
+            value=$(printf '%s' "$ALL_SECRETS" | jq -r --arg k "$key" '.[$k] // ""')
+            printf '%s=%s\n' "$key" "$value" >> local.properties
+          done
+
+      - name: Compile + link iOS Simulator (arm64) framework
+        run: ./gradlew :shared:linkDebugFrameworkIosSimulatorArm64
